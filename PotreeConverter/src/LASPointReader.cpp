@@ -5,7 +5,7 @@
 #include <vector>
 
 #include <experimental/filesystem>
-#include "laszip_api.h"
+#include "laszip/laszip_api.h"
 
 #include "LASPointReader.h"
 #include "stuff.h"

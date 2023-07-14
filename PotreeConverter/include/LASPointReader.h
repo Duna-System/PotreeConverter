@@ -7,7 +7,7 @@
 #include <iostream>
 #include <vector>
 
-#include "laszip_api.h"
+#include "laszip/laszip_api.h"
 
 #include "Point.h"
 #include "PointReader.h"

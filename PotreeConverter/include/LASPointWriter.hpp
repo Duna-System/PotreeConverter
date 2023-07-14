@@ -8,7 +8,7 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "laszip_api.h"
+#include "laszip/laszip_api.h"
 
 #include "AABB.h"
 #include "PointWriter.hpp"

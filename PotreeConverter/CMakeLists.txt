@@ -2,6 +2,8 @@ project(PotreeConverter)
 
 set(RAPIDJSON_INCLUDE_DIR lib/rapidjson/include)
 set(ARGUMENTS_INCLUDE_DIR lib/arguments)
+# Assume laszip is installed in system.
+set(LASZIP_LIBRARY laszip)
 
 file(GLOB_RECURSE files src/*.cpp include/*.h include/*.hpp )
 file(GLOB_RECURSE lib_rapidjson_files ${RAPIDJSON_INCLUDE_DIR}/* )
