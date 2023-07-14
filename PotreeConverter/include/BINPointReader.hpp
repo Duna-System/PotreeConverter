@@ -3,53 +3,52 @@
 #ifndef BINPOINTREADER_H
 #define BINPOINTREADER_H
 
-#include <string>
 #include <iostream>
+#include <string>
 #include <vector>
 
 #include "Point.h"
-#include "PointReader.h"
 #include "PointAttributes.hpp"
+#include "PointReader.h"
 
 using std::string;
 
-using std::ifstream;
 using std::cout;
 using std::endl;
+using std::ifstream;
 using std::vector;
 
-namespace Potree{
+namespace Potree {
 
-class BINPointReader : public PointReader{
-private:
-	AABB aabb;
-	double scale;
-	string path;
-	vector<string> files;
-	vector<string>::iterator currentFile;
-	ifstream *reader;
-	PointAttributes attributes;
-	Point point;
+class BINPointReader : public PointReader {
+ private:
+  AABB aabb;
+  double scale;
+  string path;
+  vector<string> files;
+  vector<string>::iterator currentFile;
+  ifstream *reader;
+  PointAttributes attributes;
+  Point point;
 
-public:
+ public:
+  BINPointReader(string path, AABB aabb, double scale, PointAttributes pointAttributes);
 
-	BINPointReader(string path, AABB aabb, double scale, PointAttributes pointAttributes);
+  ~BINPointReader();
 
-	~BINPointReader();
+  bool readNextPoint();
 
-	bool readNextPoint();
+  Point getPoint();
 
-	Point getPoint();
+  AABB getAABB();
 
-	AABB getAABB();
+  long long numPoints();
 
-	long long numPoints();
+  void close();
 
-	void close();
-
-	Vector3<double> getScale();
+  Vector3<double> getScale();
 };
 
-}
+}  // namespace Potree
 
 #endif

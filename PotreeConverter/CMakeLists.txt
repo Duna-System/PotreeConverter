@@ -18,6 +18,8 @@ set(lib_srcs_
 	src/LASPointReader.cpp
 	src/LASPointWriter.cpp
 	src/PTXPointReader.cpp
+	src/PotreeConverter.cpp
+	src/stuff.cpp
 )
 
 SOURCE_GROUP("lib\\rapidjson" FILES ${lib_rapidjson_files})
@@ -29,3 +31,5 @@ add_library(PotreeConverterLib ${lib_srcs_})
 target_include_directories(PotreeConverterLib INTERFACE
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   )
+
+target_link_libraries(PotreeConverterLib ${LASZIP_LIBRARY})

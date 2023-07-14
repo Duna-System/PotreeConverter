@@ -26,12 +26,12 @@ namespace internal {
 */
 template <typename T>
 inline void Swap(T& a, T& b) RAPIDJSON_NOEXCEPT {
-    T tmp = a;
-        a = b;
-        b = tmp;
+  T tmp = a;
+  a = b;
+  b = tmp;
 }
 
-} // namespace internal
+}  // namespace internal
 RAPIDJSON_NAMESPACE_END
 
-#endif // RAPIDJSON_INTERNAL_SWAP_H_
+#endif  // RAPIDJSON_INTERNAL_SWAP_H_

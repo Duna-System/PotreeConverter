@@ -9,66 +9,52 @@
 using std::string;
 using std::vector;
 
-namespace Potree{
+namespace Potree {
 
-class PointAttribute{
-public:
-	static const PointAttribute POSITION_CARTESIAN;
-	static const PointAttribute COLOR_PACKED;
-	static const PointAttribute INTENSITY;
-	static const PointAttribute CLASSIFICATION;
-	static const PointAttribute NORMAL_SPHEREMAPPED;
-	static const PointAttribute NORMAL_OCT16;
-	static const PointAttribute NORMAL;
+class PointAttribute {
+ public:
+  static const PointAttribute POSITION_CARTESIAN;
+  static const PointAttribute COLOR_PACKED;
+  static const PointAttribute INTENSITY;
+  static const PointAttribute CLASSIFICATION;
+  static const PointAttribute NORMAL_SPHEREMAPPED;
+  static const PointAttribute NORMAL_OCT16;
+  static const PointAttribute NORMAL;
 
-	int ordinal;
-	string name;
-	int numElements;
-	int byteSize;
+  int ordinal;
+  string name;
+  int numElements;
+  int byteSize;
 
-	PointAttribute(int ordinal, string name, int numElements, int byteSize){
-		this->ordinal = ordinal;
-		this->name = name;
-		this->numElements = numElements;
-		this->byteSize = byteSize;
-	}
+  PointAttribute(int ordinal, string name, int numElements, int byteSize) {
+    this->ordinal = ordinal;
+    this->name = name;
+    this->numElements = numElements;
+    this->byteSize = byteSize;
+  }
 
-	static PointAttribute fromString(string name);
-
+  static PointAttribute fromString(string name);
 };
 
 bool operator==(const PointAttribute& lhs, const PointAttribute& rhs);
 
+class PointAttributes {
+ public:
+  vector<PointAttribute> attributes;
+  int byteSize;
 
-class PointAttributes{
-public:
-	vector<PointAttribute> attributes;
-	int byteSize;
+  PointAttributes() { byteSize = 0; }
 
-	PointAttributes(){
-		byteSize = 0;
-	}
+  void add(PointAttribute attribute) {
+    attributes.push_back(attribute);
+    byteSize += attribute.byteSize;
+  }
 
-	void add(PointAttribute attribute){
-		attributes.push_back(attribute);
-		byteSize += attribute.byteSize;
-	}
+  int size() { return (int)attributes.size(); }
 
-	int size(){
-		return (int)attributes.size();
-	}
-
-	PointAttribute& operator[](int i) { 
-		return attributes[i]; 
-	}
-
-
+  PointAttribute& operator[](int i) { return attributes[i]; }
 };
 
-
-}
-
-
-
+}  // namespace Potree
 
 #endif
