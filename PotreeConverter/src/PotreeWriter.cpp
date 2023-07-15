@@ -30,6 +30,8 @@ using std::chrono::duration_cast;
 using std::chrono::high_resolution_clock;
 using std::chrono::milliseconds;
 
+namespace fs = std::filesystem;
+
 namespace Potree {
 
 PWNode::PWNode(PotreeWriter *potreeWriter, AABB aabb) {

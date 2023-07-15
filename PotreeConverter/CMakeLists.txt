@@ -19,6 +19,10 @@ set(lib_srcs_
 	src/LASPointWriter.cpp
 	src/PTXPointReader.cpp
 	src/PotreeConverter.cpp
+	src/PointAttributes.cpp
+	src/PotreeWriter.cpp
+	src/SparseGrid.cpp
+	src/GridCell.cpp
 	src/stuff.cpp
 )
 
@@ -30,6 +34,7 @@ add_library(PotreeConverterLib ${lib_srcs_})
 # No need to add install directive. We use it internally.
 target_include_directories(PotreeConverterLib INTERFACE
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/lib/rapidjson/include>
   )
 
 target_link_libraries(PotreeConverterLib ${LASZIP_LIBRARY})
