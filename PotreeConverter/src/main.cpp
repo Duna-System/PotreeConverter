@@ -27,6 +27,8 @@ using std::chrono::duration_cast;
 using std::chrono::high_resolution_clock;
 using std::chrono::milliseconds;
 
+namespace fs = std::filesystem;
+
 #define MAX_FLOAT std::numeric_limits<float>::max()
 
 class SparseGrid;
@@ -255,7 +257,7 @@ PotreeArguments parseArguments(int argc, char **argv) {
   }
 
   try {
-    auto absolutePath = fs::canonical(fs::system_complete(argv[0]));
+    auto absolutePath = fs::canonical(fs::absolute(argv[0]));
     a.executablePath = absolutePath.parent_path().string();
   } catch (const fs::filesystem_error &e) {
     // do nothing

@@ -31,6 +31,8 @@ SOURCE_GROUP("lib\\arguments" FILES ${lib_argument_files})
 
 add_library(PotreeConverterLib ${lib_srcs_})
 
+
+
 # No need to add install directive. We use it internally.
 target_include_directories(PotreeConverterLib INTERFACE
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
@@ -38,3 +40,6 @@ target_include_directories(PotreeConverterLib INTERFACE
   )
 
 target_link_libraries(PotreeConverterLib ${LASZIP_LIBRARY})
+
+add_executable(PotreeConverter src/main.cpp )
+target_link_libraries(PotreeConverter PotreeConverterLib)
