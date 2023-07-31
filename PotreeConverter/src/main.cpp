@@ -301,7 +301,8 @@ int main(int argc, char **argv) {
     PotreeArguments a = parseArguments(argc, argv);
     printArguments(a);
 
-    PotreeConverter pc(a.executablePath, a.outdir, a.source);
+    bool is_cancelled = false;
+    PotreeConverter pc(a.executablePath, a.outdir, a.source, &is_cancelled);
 
     pc.spacing = a.spacing;
     pc.diagonalFraction = a.diagonalFraction;

@@ -72,10 +72,11 @@ PointReader *PotreeConverter::createPointReader(string path, PointAttributes poi
   return reader;
 }
 
-PotreeConverter::PotreeConverter(string executablePath, string workDir, vector<string> sources) {
+PotreeConverter::PotreeConverter(string executablePath, string workDir, vector<string> sources, bool *isCancelled) {
   this->executablePath = executablePath;
   this->workDir = workDir;
   this->sources = sources;
+  this->isCancelled = isCancelled;
 }
 
 void PotreeConverter::prepare() {
@@ -358,13 +359,13 @@ void PotreeConverter::convert() {
   long long pointsProcessed = 0;
 
   AABB aabb = calculateAABB();
-  cout << "AABB: " << endl << aabb << endl;
+  // cout << "AABB: " << endl << aabb << endl;
   aabb.makeCubic();
-  cout << "cubic AABB: " << endl << aabb << endl;
+  // cout << "cubic AABB: " << endl << aabb << endl;
 
   if (diagonalFraction != 0) {
     spacing = (float)(aabb.size.length() / diagonalFraction);
-    cout << "spacing calculated from diagonal: " << spacing << endl;
+    // cout << "spacing calculated from diagonal: " << spacing << endl;
   }
 
   if (pageName.size() > 0) {
@@ -375,13 +376,13 @@ void PotreeConverter::convert() {
   PotreeWriter *writer = NULL;
   if (fs::exists(fs::path(this->workDir + "/cloud.js"))) {
     if (storeOption == StoreOption::ABORT_IF_EXISTS) {
-      cout << "ABORTING CONVERSION: target already exists: " << this->workDir << "/cloud.js"
-           << endl;
-      cout << "If you want to overwrite the existing conversion, specify --overwrite" << endl;
-      cout << "If you want add new points to the existing conversion, make sure the new points ";
-      cout << "are contained within the bounding box of the existing conversion and then specify "
-              "--incremental"
-           << endl;
+      // cout << "ABORTING CONVERSION: target already exists: " << this->workDir << "/cloud.js"
+          //  << endl;
+      // cout << "If you want to overwrite the existing conversion, specify --overwrite" << endl;
+      // cout << "If you want add new points to the existing conversion, make sure the new points ";
+      // cout << "are contained within the bounding box of the existing conversion and then specify "
+              // "--incremental"
+          //  << endl;
 
       return;
     } else if (storeOption == StoreOption::OVERWRITE) {
@@ -410,7 +411,7 @@ void PotreeConverter::convert() {
   vector<string> sourceFilenames;
 
   for (const auto &source : sources) {
-    cout << "READING:  " << source << endl;
+    // cout << "READING:  " << source << endl;
 
     PointReader *reader = createPointReader(source, pointAttributes);
 
@@ -427,8 +428,10 @@ void PotreeConverter::convert() {
     }
 
     while (reader->readNextPoint()) {
+      if(*this->isCancelled)
+        return;
+      
       pointsProcessed++;
-
       Point p = reader->getPoint();
       writer->add(p);
 
@@ -448,10 +451,10 @@ void PotreeConverter::convert() {
         ssMessage << writer->numAccepted << " points written; ";
         ssMessage << seconds << " seconds passed";
 
-        cout << ssMessage.str() << endl;
+        // cout << ssMessage.str() << endl;
       }
       if ((pointsProcessed % (10'000'000)) == 0) {
-        cout << "FLUSHING: ";
+        // cout << "FLUSHING: ";
 
         auto start = high_resolution_clock::now();
 
@@ -461,7 +464,7 @@ void PotreeConverter::convert() {
         long long duration = duration_cast<milliseconds>(end - start).count();
         float seconds = duration / 1'000.0f;
 
-        cout << seconds << "s" << endl;
+        // cout << seconds << "s" << endl;
       }
 
       // if(pointsProcessed >= 10'000'000){
@@ -472,7 +475,7 @@ void PotreeConverter::convert() {
     delete reader;
   }
 
-  cout << "closing writer" << endl;
+  // cout << "closing writer" << endl;
   writer->flush();
   writer->close();
 
@@ -485,12 +488,12 @@ void PotreeConverter::convert() {
   auto end = high_resolution_clock::now();
   long long duration = duration_cast<milliseconds>(end - start).count();
 
-  cout << endl;
-  cout << "conversion finished" << endl;
-  cout << pointsProcessed << " points were processed and " << writer->numAccepted << " points ( "
-       << percent << "% ) were written to the output. " << endl;
+  // cout << endl;
+  // cout << "conversion finished" << endl;
+  // cout << pointsProcessed << " points were processed and " << writer->numAccepted << " points ( "
+      //  << percent << "% ) were written to the output. " << endl;
 
-  cout << "duration: " << (duration / 1000.0f) << "s" << endl;
+  // cout << "duration: " << (duration / 1000.0f) << "s" << endl;
 }
 
 }  // namespace Potree

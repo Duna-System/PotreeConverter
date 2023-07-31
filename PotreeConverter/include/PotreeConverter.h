@@ -26,6 +26,7 @@ class PotreeConverter {
   string workDir;
   CloudJS cloudjs;
   PointAttributes pointAttributes;
+  bool *isCancelled;
 
   PointReader *createPointReader(string source, PointAttributes pointAttributes);
   void prepare();
@@ -56,7 +57,7 @@ class PotreeConverter {
   string material = "RGB";
   string executablePath;
 
-  PotreeConverter(string executablePath, string workDir, vector<string> sources);
+  PotreeConverter(string executablePath, string workDir, vector<string> sources, bool *isCancelled);
 
   void convert();
 };
